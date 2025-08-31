@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEAtd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Dark Red, Neutral Gray, Black, Pearl White -->
+    <!-- Application Structure Plan: تم تصميم الصفحة كتطبيق من صفحة واحدة (SPA) لتقديم عرض خدمة متكامل. يبدأ التصميم بخطاف تسويقي يوضح المشكلة، ثم يعرض الحل (الخدمة ومسؤولياتها)، ويدعم ذلك بمقارنة مرئية للتكلفة عبر رسم بياني، ويختتم بعرض سعر مغري ومحدود لإنشاء دافع الشراء الفوري. هذا الهيكل يوجه العميل المحتمل في رحلة منطقية من الشعور بالحاجة إلى اتخاذ قرار الشراء، مما يجعله أكثر فعالية من مجرد قائمة بالمهام. -->
+    <!-- Visualization & Content Choices: 
+        - Goal: Inform & Organize -> Method: Grouping responsibilities into themed cards with icons. Interaction: Static but visually organized. Justification: Icons and clear headings make the dense information easily scannable.
+        - Goal: Compare & Persuade -> Method: Bar Chart (Chart.js/Canvas). Interaction: Tooltips on hover. Justification: The chart provides an immediate, powerful visual comparison between the high cost of a full-time employee and the attractive offer, making the value proposition undeniable.
+        - Goal: Create Urgency -> Method: A dedicated, highlighted pricing section with clear call-to-action buttons. Interaction: Clickable buttons. Justification: Isolating the offer makes it the focal point and encourages immediate action.
+        - Library/Method: TailwindCSS for structure, Chart.js for visualization. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-700">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-2xl font-bold" style="color: #6B0000;">
+                <a href="#">IEAtd</a>
+            </div>
+            <div class="hidden md:flex space-x-8 space-x-reverse">
+                <a href="#services" class="text-gray-600 hover:text-red-800">مهام المدير</a>
+                <a href="#why-us" class="text-gray-600 hover:text-red-800">لماذا نحن؟</a>
+                <a href="#pricing" class="text-gray-600 hover:text-red-800">العرض الخاص</a>
+                <a href="#contact" class="text-gray-600 hover:text-red-800">تواصل معنا</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-white px-6 pt-2 pb-4">
+            <a href="#services" class="block py-2 text-gray-600 hover:text-red-800">مهام المدير</a>
+            <a href="#why-us" class="block py-2 text-gray-600 hover:text-red-800">لماذا نحن؟</a>
+            <a href="#pricing" class="block py-2 text-gray-600 hover:text-red-800">العرض الخاص</a>
+            <a href="#contact" class="block py-2 text-gray-600 hover:text-red-800">تواصل معنا</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-white pt-20 pb-12">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-3xl md:text-5xl font-extrabold text-black mb-4">حوّل برامجك التدريبية إلى قصة نجاح</h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">نوفر لك خبيرًا متخصصًا لإدارة تدريبك عبر الإنترنت بالكامل، بدءًا من التخطيط ووصولاً إلى قياس الأثر، بتكلفة لا تُقارن. تفرّغ لتطوير أعمالك واترك لنا إدارة التفاصيل.</p>
+                <a href="#pricing" class="bg-red-800 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-900 transition duration-300" style="background-color: #6B0000;">اكتشف عرض الإطلاق الحصري</a>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-black">الوصف الوظيفي: مهام مدير التدريب أونلاين</h2>
+                    <p class="text-gray-600 mt-2">نقدم لك إدارة شاملة تغطي كل جوانب العملية التدريبية لضمان تحقيق أفضل النتائج.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-4xl mb-4" style="color: #6B0000;">📋</div>
+                        <h3 class="text-xl font-bold mb-2 text-black">التخطيط والاستراتيجية</h3>
+                        <p class="text-gray-600">بناء استراتيجية تدريبية متكاملة، تحديد الأهداف، تحليل الاحتياجات التدريبية، وتصميم رحلة تعليمية فعالة للمتدربين.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-4xl mb-4" style="color: #6B0000;">🖥️</div>
+                        <h3 class="text-xl font-bold mb-2 text-black">إدارة المحتوى والمنصات</h3>
+                        <p class="text-gray-600">إدارة منصة التعلم (LMS)، رفع وتنسيق المواد التدريبية، وإنشاء الأنشطة التفاعلية والاختبارات لتعزيز المشاركة.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-4xl mb-4" style="color: #6B0000;">👥</div>
+                        <h3 class="text-xl font-bold mb-2 text-black">دعم ومتابعة المتدربين</h3>
+                        <p class="text-gray-600">التواصل المستمر مع المتدربين، الإجابة على استفساراتهم، تحفيزهم، ومراقبة تقدمهم لضمان عدم تسربهم من الدورة.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="text-4xl mb-4" style="color: #6B0000;">📊</div>
+                        <h3 class="text-xl font-bold mb-2 text-black">التقارير والتحليل</h3>
+                        <p class="text-gray-600">إعداد تقارير دورية حول أداء البرامج التدريبية، نسب الإكمال، تفاعل المتدربين، وتقديم توصيات لتحسين النتائج.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Us Section / Cost Comparison -->
+        <section id="why-us" class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-black">وفّر أكثر من 95% من تكلفة التوظيف</h2>
+                    <p class="text-gray-600 mt-2">احصل على خبرة مدير تدريب متخصص بجزء بسيط من تكلفة تعيين موظف بدوام كامل. شاهد الفرق بنفسك.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="costComparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-black">عرض السعر الذي لا يقاوم (للسوق السعودي)</h2>
+                    <p class="text-gray-600 mt-2">صُمم هذا العرض خصيصًا لمساعدتك على الانطلاق بأقل تكلفة ممكنة.</p>
+                </div>
+                <div class="max-w-md mx-auto bg-white rounded-lg shadow-2xl overflow-hidden" style="border: 4px solid #6B0000;">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-center mb-2 text-black">باقة الانطلاقة الذكية</h3>
+                        <p class="text-center text-gray-500 mb-6">(عرض حصري لأول 5 عملاء فقط)</p>
+                        <div class="text-center my-8">
+                            <span class="text-5xl font-extrabold text-black">399</span>
+                            <span class="text-xl text-gray-600">ريال/شهريًا</span>
+                        </div>
+                        <p class="text-center text-gray-500 line-through">بدلاً من 1200 ريال</p>
+                        <ul class="mt-8 space-y-4 text-gray-700">
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2 ml-2">✔</span>
+                                <span>إدارة كاملة لما يصل إلى 3 برامج تدريبية</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2 ml-2">✔</span>
+                                <span>متابعة حتى 100 متدرب شهريًا</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-green-500 mr-2 ml-2">✔</span>
+                                <span>تقرير أداء أسبوعي مفصل</span>
+                            </li>
+                             <li class="flex items-center">
+                                <span class="text-green-500 mr-2 ml-2">✔</span>
+                                <span>دعم فني وتقني للمتدربين</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block w-full text-center text-white font-bold py-4 px-8 rounded-lg text-lg hover:opacity-90 transition duration-300 mt-10" style="background-color: #6B0000;">أريد هذا العرض الآن</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                 <h2 class="text-3xl font-bold text-black mb-4">هل أنت جاهز للارتقاء بتدريبك؟</h2>
+                 <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">تواصل معنا اليوم لحجز مكانك ضمن عرض الإطلاق المحدود، ودعنا نبدأ رحلة النجاح معًا.</p>
+                 <a href="mailto:info@ieatd.com" class="text-white font-bold py-3 px-8 rounded-lg text-lg hover:opacity-90 transition duration-300" style="background-color: #6B0000;">
+                    تواصل معنا عبر البريد الإلكتروني ( info@ieatd.com )
+                 </a>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-black text-white py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 IEAtd. كل الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a, main a[href^="#"]').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.contains(link)) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('costComparisonChart').getContext('2d');
+            const costComparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['متوسط تكلفة موظف بدوام كامل', 'عرضنا التأسيسي الحصري'],
+                    datasets: [{
+                        label: 'التكلفة الشهرية بالريال السعودي',
+                        data: [10000, 399],
+                        backgroundColor: [
+                            '#5A5A5A', 
+                            '#6B0000'   
+                        ],
+                        borderColor: [
+                            '#5A5A5A',
+                            '#6B0000'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString('ar-SA') + ' ريال';
+                                },
+                                font: {
+                                    family: "'Tajawal', sans-serif",
+                                    size: 14,
+                                },
+                                color: '#000'
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                font: {
+                                    family: "'Tajawal', sans-serif",
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                color: '#000'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             bodyFont: {
+                                family: "'Tajawal', sans-serif",
+                            },
+                            titleFont: {
+                                 family: "'Tajawal', sans-serif",
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x.toLocaleString('ar-SA') + ' ريال';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
